@@ -1,58 +1,58 @@
 package Banking.System.Exercise;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class BankingServiceImpl implements BankingService {
+    Scanner scanner = new Scanner(System.in);
+
+    private final Database database ;
+
+    public BankingServiceImpl(){
+        database = new Database();
+    }
+
     @Override
     public void transfer(Account source, Account target, Double amount) {
-        source.setBalance( source.getBalance() - amount);
-        target.setBalance(target.getBalance() + amount);
+        database.transfer(source , target , amount);
     }
 
     @Override
     public void withdraw(Account account, Double amount) {
-        account.setBalance(account.getBalance() + amount);
+        database.withdraw(account, amount );
     }
 
     @Override
     public void deposit(Account account, Double amount) {
-        account.setBalance(account.getBalance() - amount);
+        database.deposit(account , amount);
     }
 
     @Override
-    public void showBalance(Account account) {
-        System.out.println(account.getBalance());
+    public Double showBalance(Account account) {
+        return database.checkBalance(account);
     }
 
     @Override
-    public void createAccount(List<Account> accounts , Account account) {
-        accounts.add(account);
+    public void createAccount(Account account) {
+        database.createAccount( account);
     }
 
     @Override
-    public void deleteAccount(List<Account> accounts, Account account) {
-        accounts.remove(account);
+    public void deleteAccount(String accountNum) {
+       database.deleteAccount(accountNum);
     }
 
     @Override
-    public void viewAllAccount(List<Account> accounts) {
-        System.out.println(accounts);
+    public List<Account> viewAllAccount() {
+
+        return database.displayAllAccount();
     }
 
     @Override
-    public void updateAccount(List<Account> accounts, Account UpdaetAccount , String accountNum ) {
-        accounts.replaceAll(acc -> acc.getAccountNumber().equals(accountNum) ? UpdaetAccount : acc);
+    public void updateAccount(Account updateAccount , String accountNum ) {
+      database.updateAccount(accountNum , updateAccount);
     }
 
-    /*
-    acc -> ...: This tells Java: "Take every individual Account (let's call it acc) inside the accounts list one by one."
-
-    The Condition (?): It checks: "Does this specific account's number match the one I'm looking for?"
-
-    The Result if True: If the numbers match, it replaces that account with your updatedAccount.
-
-    The Result if False (: acc): If they don't match, it tells Java: "Just keep the original account (acc) exactly where it is."
-     */
 
     @Override
     public Account searchAccount(List<Account> accounts, String accountNum) {
@@ -69,4 +69,104 @@ public class BankingServiceImpl implements BankingService {
         System.out.println(account.getAccountNumber());
         System.out.println(account.getName());
     }
-}
+
+    @Override
+    public Account loginLogic(List<Account> accounts , String accountNumber , Integer pinCode) {
+        return database.loginLogic(accounts , accountNumber , pinCode);
+    }
+
+    @Override
+    public Account inputInformation() {
+
+        System.out.println("Enter your name: ");
+        String name = scanner.nextLine();
+        System.out.println("Enter your Account number: ");
+        String accNum = scanner.nextLine();
+        System.out.println("Enter your Pin code: ");
+        int pin = scanner.nextInt();
+        scanner.nextLine();
+
+        return new Account(accNum, name, pin);
+    }
+
+    @Override
+    public String inputAccountNumber() {
+        System.out.print("Enter your account number : ");
+        String accountNumber = scanner.nextLine();
+        return accountNumber;
+    }
+
+    @Override
+    public void adminService(int option) {
+        switch (option){
+            case 1 -> {
+                Account newAccount = inputInformation();
+                createAccount(newAccount);
+                System.out.println("Account created successfully");
+            }
+            case 2 -> {
+
+                System.out.println(viewAllAccount());
+            }
+            case 3 -> {
+                System.out.print("Enter your account number : ");
+                String accountNumber = scanner.nextLine();
+                Account updateAccount = inputInformation();
+                updateAccount(updateAccount , accountNumber);
+            }
+            case 4 -> {
+
+                String accNum = inputAccountNumber() ;
+                Account SearchAccount = searchAccount(viewAllAccount() , accNum);
+                System.out.println(SearchAccount);
+
+            }
+            case 5 -> {
+                String accNum = inputAccountNumber();
+                deleteAccount(accNum);
+            }
+
+        }
+    }
+
+    @Override
+    public void customerService(int option , Account account) {
+        switch (option){
+            case 1 -> {
+//                System.out.println("Enter your account number : ");
+//                String accountNum = inputAccountNumber();
+                System.out.println("Enter amount to deposit : ");
+                Double amount = scanner.nextDouble();
+//                Account account = searchAccount(viewAllAccount() , accountNum);
+                deposit(account , amount);
+            }
+            case 2 -> {
+//                System.out.println("Enter your account number : ");
+//                String accountNum = inputAccountNumber() ;
+                System.out.println("Enter amount to withdraw");
+                Double amount = scanner.nextDouble();
+//                Account account = searchAccount(viewAllAccount() , accountNum);
+                withdraw(account , amount);
+
+            }
+            case 3 -> {
+//                System.out.println("Enter account number to transfer money : ");
+//                String accNum1 = inputAccountNumber();
+//                Account source = searchAccount(viewAllAccount() , accNum1);
+                System.out.println("Enter account number to receive money : ");
+                String accNum2 = inputAccountNumber();
+                Account target = searchAccount(viewAllAccount() , accNum2);
+                System.out.println("Enter amount to transfer : ");
+                Double amount = scanner.nextDouble();
+
+                transfer(account , target , amount);
+            }
+            case 4 -> {
+//                System.out.println("Enter account number : ");
+//                String accountNum = inputAccountNumber() ;
+//                Account account = searchAccount(viewAllAccount() , accountNum);
+                System.out.println(showBalance(account));
+
+            }
+    }
+}}

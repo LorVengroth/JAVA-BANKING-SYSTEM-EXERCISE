@@ -6,13 +6,18 @@ public interface BankingService {
     void transfer(Account source , Account target , Double amount);
     void withdraw(Account account , Double amount);
     void deposit(Account account , Double amount);
-    void showBalance(Account account);
-    void createAccount(List<Account> accounts , Account account);
-    void deleteAccount(List<Account> accounts , Account account);
-    void viewAllAccount(List<Account> accounts);
-    void updateAccount(List<Account> accounts , Account UpdaetAccount , String accountNum);
+    Double showBalance(Account account);
+    void createAccount(Account account);
+    void deleteAccount(String accountNum);
+    List<Account> viewAllAccount();
+    void updateAccount( Account UpdaetAccount , String accountNum);
     Account searchAccount(List<Account> accounts , String accountNum);
     void displaySearchAccount(Account account);
+    Account loginLogic(List<Account> accounts , String accountNumber , Integer pinCode );
+    void adminService(int option);
+    void customerService(int option , Account account);
+    Account inputInformation();
+    String inputAccountNumber();
 
 
 
