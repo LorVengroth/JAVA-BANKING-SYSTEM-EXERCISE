@@ -53,6 +53,16 @@ public class BankingServiceImpl implements BankingService {
       database.updateAccount(accountNum , updateAccount);
     }
 
+    @Override
+    public void displayAllAccount(List<Account> accounts) {
+        for (Account account : accounts){
+            System.out.println("Account Number : " + account.getAccountNumber());
+            System.out.println( "Account Name : " +  account.getName());
+            System.out.println("Account Balance : " + account.getBalance());
+            System.out.println("Account Pin Code : " + account.getPin());
+            System.out.println("--------------------");
+        }
+    }
 
     @Override
     public Account searchAccount(List<Account> accounts, String accountNum) {
@@ -65,9 +75,11 @@ public class BankingServiceImpl implements BankingService {
 
     @Override
     public void displaySearchAccount(Account account) {
-        System.out.println(account.getBalance());
-        System.out.println(account.getAccountNumber());
-        System.out.println(account.getName());
+        System.out.println("Account Number : " + account.getAccountNumber());
+        System.out.println( "Account Name : " +  account.getName());
+        System.out.println("Account Balance : " + account.getBalance());
+        System.out.println("Account Pin Code : " + account.getPin());
+        System.out.println("--------------------");
     }
 
     @Override
@@ -78,11 +90,11 @@ public class BankingServiceImpl implements BankingService {
     @Override
     public Account inputInformation() {
 
-        System.out.println("Enter your name: ");
+        System.out.print("Enter your name: ");
         String name = scanner.nextLine();
-        System.out.println("Enter your Account number: ");
+        System.out.print("Enter your Account number: ");
         String accNum = scanner.nextLine();
-        System.out.println("Enter your Pin code: ");
+        System.out.print("Enter your Pin code: ");
         int pin = scanner.nextInt();
         scanner.nextLine();
 
@@ -93,80 +105,99 @@ public class BankingServiceImpl implements BankingService {
     public String inputAccountNumber() {
         System.out.print("Enter your account number : ");
         String accountNumber = scanner.nextLine();
+
         return accountNumber;
     }
 
     @Override
-    public void adminService(int option) {
-        switch (option){
-            case 1 -> {
-                Account newAccount = inputInformation();
-                createAccount(newAccount);
-                System.out.println("Account created successfully");
-            }
-            case 2 -> {
+    public void adminService() {
+        while(true){
+            System.out.println(PrintUtil.MENUforADMIN);
+            System.out.print("Enter your option : ");
+            int optionForAdmin = scanner.nextInt();
+            switch (optionForAdmin){
+                case 1 -> {
+                    Account newAccount = inputInformation();
+                    createAccount(newAccount);
+                    System.out.println("Account created successfully");
+                }
+                case 2 -> {
 
-                System.out.println(viewAllAccount());
-            }
-            case 3 -> {
-                System.out.print("Enter your account number : ");
-                String accountNumber = scanner.nextLine();
-                Account updateAccount = inputInformation();
-                updateAccount(updateAccount , accountNumber);
-            }
-            case 4 -> {
+                    displayAllAccount(viewAllAccount());
 
-                String accNum = inputAccountNumber() ;
-                Account SearchAccount = searchAccount(viewAllAccount() , accNum);
-                System.out.println(SearchAccount);
+                }
+                case 3 -> {
+                    System.out.print("Enter your account number : ");
+                    String accountNumber = scanner.nextLine();
+                    Account updateAccount = inputInformation();
+                    updateAccount(updateAccount , accountNumber);
+                }
+                case 4 -> {
+                    scanner.nextLine();
+                    String accNum = inputAccountNumber() ;
+                    Account SearchAccount = searchAccount(viewAllAccount() , accNum);
+                    displaySearchAccount(SearchAccount);
+
+                }
+                case 5 -> {
+                    String accNum = inputAccountNumber();
+                    deleteAccount(accNum);
+                }
+                case 6 -> {
+                    return ;
+                }
+
 
             }
-            case 5 -> {
-                String accNum = inputAccountNumber();
-                deleteAccount(accNum);
-            }
+
+
 
         }
     }
 
     @Override
-    public void customerService(int option , Account account) {
-        switch (option){
-            case 1 -> {
+    public void customerService( Account account) {
+        while(true){
+            System.out.println(PrintUtil.MENUforCUSTOMER);
+            System.out.print("Enter your option : ");
+            int optionForCustomer = scanner.nextInt();
+            switch (optionForCustomer){
+                case 1 -> {
 //                System.out.println("Enter your account number : ");
 //                String accountNum = inputAccountNumber();
-                System.out.println("Enter amount to deposit : ");
-                Double amount = scanner.nextDouble();
+                    System.out.print("Enter amount to deposit : ");
+                    Double amount = scanner.nextDouble();
 //                Account account = searchAccount(viewAllAccount() , accountNum);
-                deposit(account , amount);
-            }
-            case 2 -> {
+                    deposit(account , amount);
+                }
+                case 2 -> {
 //                System.out.println("Enter your account number : ");
 //                String accountNum = inputAccountNumber() ;
-                System.out.println("Enter amount to withdraw");
-                Double amount = scanner.nextDouble();
+                    System.out.print("Enter amount to withdraw");
+                    Double amount = scanner.nextDouble();
 //                Account account = searchAccount(viewAllAccount() , accountNum);
-                withdraw(account , amount);
+                    withdraw(account , amount);
 
-            }
-            case 3 -> {
-//                System.out.println("Enter account number to transfer money : ");
-//                String accNum1 = inputAccountNumber();
-//                Account source = searchAccount(viewAllAccount() , accNum1);
-                System.out.println("Enter account number to receive money : ");
-                String accNum2 = inputAccountNumber();
-                Account target = searchAccount(viewAllAccount() , accNum2);
-                System.out.println("Enter amount to transfer : ");
-                Double amount = scanner.nextDouble();
+                }
+                case 3 -> {
+//
 
-                transfer(account , target , amount);
-            }
-            case 4 -> {
-//                System.out.println("Enter account number : ");
-//                String accountNum = inputAccountNumber() ;
-//                Account account = searchAccount(viewAllAccount() , accountNum);
-                System.out.println(showBalance(account));
+                scanner.nextLine();
+                    System.out.print("Enter account number to receive money : ");
+                    String accNum2 = scanner.nextLine();
+                    Account target = searchAccount(viewAllAccount() , accNum2);
+                    System.out.print("Enter amount to transfer : ");
+                    Double amount = scanner.nextDouble();
+                    scanner.nextLine();
+                    displaySearchAccount(target);
+                    transfer(account , target , amount);
+                }
+                case 4 -> {
+                    System.out.println(showBalance(account));
 
+                }
+                case 5 -> { return; }
             }
-    }
+        }
+
 }}

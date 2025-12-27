@@ -14,10 +14,12 @@ public interface BankingService {
     Account searchAccount(List<Account> accounts , String accountNum);
     void displaySearchAccount(Account account);
     Account loginLogic(List<Account> accounts , String accountNumber , Integer pinCode );
-    void adminService(int option);
-    void customerService(int option , Account account);
+    void adminService();
+    void customerService( Account account);
     Account inputInformation();
     String inputAccountNumber();
+    void displayAllAccount(List<Account> accounts);
+
 
 
 

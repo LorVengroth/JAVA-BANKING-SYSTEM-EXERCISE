@@ -7,6 +7,7 @@ public class PrintUtil {
             2. Withdraw
             3. Transfer
             4. Check Balance
+            5. Exit
             """;
 
     public static String MENUforADMIN = """
@@ -16,6 +17,7 @@ public class PrintUtil {
             3. Update Account Detail
             4. Search Account
             5. Delete Account
+            6. Exit 
             """;
 
     public static String MENU = """

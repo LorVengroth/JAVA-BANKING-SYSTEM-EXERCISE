@@ -42,12 +42,14 @@ public class Account {
         return name;
     }
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "accountNumber='" + accountNumber + '\'' +
-                ", balance=" + balance +
-                ", name='" + name + '\'' +
-                '}';
-    }
+
+//    public String toString() {
+//        return "Account : {" +
+//                "accountNumber='" + accountNumber + '\'' +
+//                ", balance=" + balance +
+//                ", name='" + name + '\'' +
+//                '}';
+//        System.out.println();
+//
+//    }
 }
